@@ -6,7 +6,7 @@ from flask_login import login_required, login_user, logout_user, current_user
 auth = Blueprint('auth', __name__)
 
 
-@auth.route('/login')
+@auth.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         email = request.form.get('email')
@@ -17,6 +17,7 @@ def login():
             if check_password_hash(user.password, password):
                 flash('Logged in Successfully', category='success')
                 login_user(user=user, remember=True)
+                return redirect(url_for('views.home_page'))
     return render_template('login.html', user=current_user)
 
 
